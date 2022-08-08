@@ -1,5 +1,7 @@
 package br.com.marcelpinotti.jsonviewsexample.dtos.user;
 
+import br.com.marcelpinotti.jsonviewsexample.dtos.views.UserViews;
+import com.fasterxml.jackson.annotation.JsonView;
 import lombok.*;
 import org.hibernate.Hibernate;
 
@@ -11,10 +13,15 @@ import java.util.Objects;
 @Getter
 public class UserDto {
 
+    @JsonView(UserViews.RestrictedData.class)
     private Long id;
+    @JsonView({UserViews.RestrictedData.class, UserViews.SaveData.class})
     private String name;
+    @JsonView({UserViews.RestrictedData.class, UserViews.SaveData.class})
     private String lastname;
+    @JsonView({UserViews.RestrictedData.class, UserViews.SaveData.class})
     private String email;
+    @JsonView({UserViews.SaveData.class, UserViews.CompleteData.class})
     private String password;
 
     @Override

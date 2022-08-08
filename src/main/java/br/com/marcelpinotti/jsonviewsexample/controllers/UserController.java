@@ -1,7 +1,9 @@
 package br.com.marcelpinotti.jsonviewsexample.controllers;
 
 import br.com.marcelpinotti.jsonviewsexample.dtos.user.UserDto;
+import br.com.marcelpinotti.jsonviewsexample.dtos.views.UserViews;
 import br.com.marcelpinotti.jsonviewsexample.services.UserService;
+import com.fasterxml.jackson.annotation.JsonView;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,18 +29,20 @@ public class UserController {
         return ResponseEntity.ok().body(users);
     }
 
+    @JsonView(UserViews.RestrictedData.class)
     @GetMapping("/restrict")
-    public ResponseEntity<List<UserDto>> findAllRestrictedUsers() {
+    public ResponseEntity<List<UserDto>> findAllRestrictedUsers(String s) {
         List<UserDto> users = service.findAllUsers();
         return ResponseEntity.ok().body(users);
     }
-
+    @JsonView(UserViews.SaveData.class)
     @PostMapping
     public ResponseEntity<UserDto> saveUser(@RequestBody UserDto saveData) {
         UserDto user = service.saveUser(saveData);
         return ResponseEntity.ok().body(user);
     }
 
+    @JsonView(UserViews.CompleteData.class)
     @PutMapping("{id}")
     public ResponseEntity<UserDto> updateUser(@PathVariable("id")Long id, @RequestBody UserDto updatedData) {
         UserDto user = service.updateUser(id, updatedData);
